@@ -1,0 +1,15 @@
+VM Configuration
+
+Hypervisor: VMware Workstation
+Guest OS: Ubuntu
+
+vCPU: 4
+Memory: 8 GB
+Virtual Disk: 60 GB
+Network: NAT
+
+Actual configuration used for benchmark:
+vCPU: 4
+Memory: 8 GB
+Virtual Disk: 30 GB
+Network: NAT

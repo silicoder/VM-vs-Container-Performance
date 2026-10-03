@@ -1,0 +1,29 @@
+rand-read: (g=0): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=psync, iodepth=16
+fio-3.36
+Starting 1 process
+rand-read: Laying out IO file (1 file / 2048MiB)
+note: both iodepth >= 1 and synchronous I/O engine are selected, queue depth will be capped at 1
+
+rand-read: (groupid=0, jobs=1): err= 0: pid=12: Wed Sep 30 17:17:39 2026
+  read: IOPS=5353, BW=20.9MiB/s (21.9MB/s)(627MiB/30001msec)
+    clat (usec): min=74, max=17683, avg=185.36, stdev=113.79
+     lat (usec): min=74, max=17684, avg=185.47, stdev=113.81
+    clat percentiles (usec):
+     |  1.00th=[   91],  5.00th=[  108], 10.00th=[  114], 20.00th=[  119],
+     | 30.00th=[  127], 40.00th=[  139], 50.00th=[  159], 60.00th=[  192],
+     | 70.00th=[  217], 80.00th=[  241], 90.00th=[  277], 95.00th=[  326],
+     | 99.00th=[  478], 99.50th=[  537], 99.90th=[  717], 99.95th=[  947],
+     | 99.99th=[ 3097]
+   bw (  KiB/s): min=13808, max=28792, per=100.00%, avg=21423.36, stdev=3196.39, samples=59
+   iops        : min= 3452, max= 7198, avg=5355.83, stdev=799.10, samples=59
+  lat (usec)   : 100=3.10%, 250=80.09%, 500=16.03%, 750=0.69%, 1000=0.04%
+  lat (msec)   : 2=0.03%, 4=0.01%, 10=0.01%, 20=0.01%
+  cpu          : usr=1.85%, sys=25.55%, ctx=160590, majf=0, minf=9
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwts: total=160599,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+
+Run status group 0 (all jobs):
+   READ: bw=20.9MiB/s (21.9MB/s), 20.9MiB/s-20.9MiB/s (21.9MB/s-21.9MB/s), io=627MiB (658MB), run=30001-30001msec

@@ -1,0 +1,83 @@
+VM vs Docker Performance Comparison
+====================================
+
+Environment:
+Ubuntu 24.04 VM
+Native VM API: http://localhost:8000
+Docker API: http://localhost:8001
+
+------------------------------------
+1. COMPUTE TEST
+------------------------------------
+
+Native VM:
+Average: 0.039293 seconds
+Minimum: 0.035845 seconds
+Maximum: 0.053111 seconds
+
+Docker:
+Average: 0.052390 seconds
+Minimum: 0.049004 seconds
+Maximum: 0.061435 seconds
+
+------------------------------------
+2. MEMORY TEST
+------------------------------------
+
+Native VM:
+Average: 0.031218 seconds
+Minimum: 0.028431 seconds
+Maximum: 0.041243 seconds
+
+Docker:
+Average: 0.034857 seconds
+Minimum: 0.031907 seconds
+Maximum: 0.043938 seconds
+
+------------------------------------
+3. CONCURRENT REQUEST TEST
+------------------------------------
+
+Native VM:
+Requests: 100
+Concurrency: 10
+Failed requests: 0
+
+Docker:
+Requests: 100
+Concurrency: 10
+Failed requests: 0
+
+------------------------------------
+4. DOCKER RESOURCE USAGE
+------------------------------------
+
+CPU: approximately 0.24%
+Memory: approximately 111.9 MiB
+
+------------------------------------
+5. SYSTEM MEMORY
+------------------------------------
+
+Total RAM: 8.1 GiB
+Used: 1.7 GiB
+Free: 4.2 GiB
+Available: 6.3 GiB
+
+------------------------------------
+6. DOCKER NETWORKING
+------------------------------------
+
+Native VM port: 8000
+Docker port: 8001
+
+------------------------------------
+CONCLUSION
+------------------------------------
+
+The benchmark successfully compares the Native VM
+and Docker environments using compute, memory and
+concurrent request tests.
+
+Both environments completed the tested requests
+without failures.

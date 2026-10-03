@@ -1,0 +1,5 @@
+Test,Environment,Average_Time_Seconds,Minimum_Time_Seconds,Maximum_Time_Seconds
+Compute,Native VM,0.039293,0.035845,0.053111
+Compute,Docker,0.052390,0.049004,0.061435
+Memory,Native VM,0.031218,0.028431,0.041243
+Memory,Docker,0.034857,0.031907,0.043938

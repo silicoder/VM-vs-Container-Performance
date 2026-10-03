@@ -1,0 +1,64 @@
+VM VS DOCKER PERFORMANCE COMPARISON
+===================================
+
+COMPUTE TEST
+------------
+
+Native VM average response time:
+0.039293 seconds
+
+Docker average response time:
+0.052390 seconds
+
+
+MEMORY TEST
+-----------
+
+Native VM average response time:
+0.031218 seconds
+
+Docker average response time:
+0.034857 seconds
+
+
+CONCURRENT REQUEST TEST
+-----------------------
+
+Requests: 100
+Concurrency: 10
+Failed requests: 0
+
+
+DOCKER RESOURCE USAGE
+---------------------
+
+CPU: approximately 0.24%
+Memory: approximately 111.9 MiB
+
+
+SYSTEM MEMORY
+-------------
+
+Total RAM: 8.1 GiB
+Used: 1.7 GiB
+Available: 6.3 GiB
+
+
+SUMMARY
+-------
+
+The experiment successfully measured the performance
+of the same FastAPI application running directly in
+the VM and inside a Docker container.
+
+Measurements included:
+
+1. Compute response time
+2. Memory response time
+3. Concurrent request performance
+4. CPU usage
+5. Docker memory usage
+6. System memory usage
+
+Both environments successfully handled the tested
+requests without failed requests.
