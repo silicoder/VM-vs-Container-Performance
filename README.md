@@ -1,33 +1,33 @@
-# VM vs Container Performance Analysis
+# VM vs Docker Performance Comparison
 
 ## 1. Project Overview
 
-This project evaluates the performance differences between a **Virtual Machine (VM)** and a **Docker Container**.
+This project compares the performance of a **FastAPI application running directly on an Ubuntu Virtual Machine (VM)** with the same application running inside a **Docker container**.
 
-The experiment compares the two environments using:
+The experiment evaluates:
 
 * Compute performance
 * Memory performance
 * Concurrent request handling
-* Docker resource usage
+* Docker CPU and memory usage
 * System memory usage
-* Networking configuration
+* Application networking
 
-The main objective is to understand the performance overhead of containerization compared with running the application directly inside a Virtual Machine.
+The purpose is to observe the performance differences between running an application directly inside a VM and running it inside a Docker container.
 
 ---
 
-## 2. Objective
+## 2. Project Objectives
 
 The main objectives of this experiment are:
 
-1. Compare compute performance between a VM and a Docker container.
-2. Compare memory performance between a VM and a Docker container.
-3. Compare concurrent request handling between the two environments.
-4. Measure Docker CPU and memory resource usage.
-5. Observe the system memory available during the experiment.
-6. Compare the networking configuration of the VM and Docker environments.
-7. Understand the practical performance differences between VMs and containers.
+1. Compare application compute performance between a VM and Docker.
+2. Compare memory-operation performance.
+3. Test concurrent request handling.
+4. Measure Docker container resource usage.
+5. Observe system memory usage.
+6. Compare the application networking configuration.
+7. Understand the practical performance characteristics of containerized applications.
 
 ---
 
@@ -35,7 +35,7 @@ The main objectives of this experiment are:
 
 ### Virtual Machine
 
-A Virtual Machine virtualizes hardware and runs a complete guest operating system.
+A Virtual Machine runs a complete operating system on virtualized hardware.
 
 ```text
 Application
@@ -51,151 +51,220 @@ Host Operating System
 Physical Hardware
 ```
 
-A VM requires its own operating system, which introduces additional CPU, memory, and storage requirements.
+The VM used in this experiment runs Ubuntu 24.04.
 
-### Container
+### Docker Container
 
-A container isolates an application while sharing the host operating system kernel.
+A Docker container runs the application while sharing the host operating-system kernel.
 
 ```text
 Application
      ↓
-Container
+Docker Container
      ↓
 Host Operating System Kernel
      ↓
 Physical Hardware
 ```
 
-Containers do not require a separate guest operating system, allowing applications to run with relatively low resource overhead.
+Containers do not require a separate guest operating system for each application.
 
 ---
 
 # 4. Experimental Environment
 
-The experiment was performed inside an **Ubuntu 24.04 VM** using Docker.
+## Native VM
 
-### Environment
+| Parameter          | Configuration          |
+| ------------------ | ---------------------- |
+| Environment        | VMware Virtual Machine |
+| Operating System   | Ubuntu 24.04           |
+| Application        | FastAPI                |
+| Application Server | Uvicorn                |
+| Port               | 8000                   |
 
-* Operating System: **Ubuntu 24.04**
-* Virtualization Platform: **VMware Workstation**
-* Container Technology: **Docker**
-* Native VM API: `http://localhost:8000`
-* Docker API: `http://localhost:8001`
+## Docker
 
-### System Memory
+| Parameter            | Configuration         |
+| -------------------- | --------------------- |
+| Container Technology | Docker                |
+| Application          | FastAPI               |
+| Application Server   | Uvicorn               |
+| Port                 | 8001                  |
+| Container Name       | `vm-vs-api-container` |
 
-The system reported the following memory information during the experiment:
-
-| Parameter     |   Value |
-| ------------- | ------: |
-| Total RAM     | 8.1 GiB |
-| Used RAM      | 1.7 GiB |
-| Free RAM      | 4.2 GiB |
-| Available RAM | 6.3 GiB |
-| Swap          | 4.0 GiB |
+The same FastAPI application functionality was tested in both environments.
 
 ---
 
-# 5. Benchmark Tests
+# 5. Technologies Used
 
-The project performs the following tests:
+* Ubuntu 24.04
+* VMware
+* Docker
+* Dockerfile
+* Python
+* FastAPI
+* Uvicorn
+* ApacheBench
+* Linux system monitoring tools
+* Git
+* GitHub
 
-### 5.1 Compute Test
+---
 
-The compute test measures the time required to perform the computational workload.
+# 6. Application Architecture
 
-The test records:
+The experiment uses two instances of the FastAPI application.
 
-* Average execution time
-* Minimum execution time
-* Maximum execution time
+```text
+                    VM Environment
+                         │
+                         ▼
+                  FastAPI Application
+                         │
+                    Port 8000
+                         │
+                         ▼
+                    Test Requests
 
-### 5.2 Memory Test
 
-The memory test measures the time required to perform the memory workload.
+                    Docker Environment
+                         │
+                         ▼
+                  Docker Container
+                         │
+                  FastAPI Application
+                         │
+                    Port 8001
+                         │
+                         ▼
+                    Test Requests
+```
 
-The test records:
+This allows the application performance to be compared between the two environments.
 
-* Average execution time
-* Minimum execution time
-* Maximum execution time
+---
 
-### 5.3 Concurrent Request Test
+# 7. Tests Performed
 
-The concurrent request test evaluates how both environments handle multiple requests.
+The following tests were performed.
 
-The experiment uses:
+### 7.1 Compute Test
 
-* Total requests: **100**
-* Concurrency: **10**
+The `/compute` endpoint was tested to measure the time required to perform the compute workload.
 
-The number of failed requests is also recorded.
+Measured values:
 
-### 5.4 Docker Resource Usage
+* Average response time
+* Minimum response time
+* Maximum response time
 
-Docker resource consumption is measured using container statistics.
+### 7.2 Memory Test
 
-The recorded metrics include:
+The `/memory` endpoint was tested to measure memory-related processing time.
+
+Measured values:
+
+* Average response time
+* Minimum response time
+* Maximum response time
+
+### 7.3 Concurrent Request Test
+
+ApacheBench was used to send multiple requests concurrently.
+
+Test configuration:
+
+```text
+Requests: 100
+Concurrency: 10
+```
+
+The number of failed requests was recorded for both environments.
+
+### 7.4 Docker Resource Usage
+
+Docker resource consumption was monitored using:
+
+```bash
+docker stats
+```
+
+The following values were observed:
 
 * CPU usage
 * Memory usage
-* Network I/O
-* Block I/O
-* Number of processes
+
+### 7.5 System Memory
+
+System memory was checked using:
+
+```bash
+free -h
+```
+
+The following values were recorded:
+
+* Total RAM
+* Used RAM
+* Free RAM
+* Available RAM
 
 ---
 
-# 6. Compute Performance Results
+# 8. Compute Performance
 
-The following results were obtained from the benchmark.
+The compute benchmark measured the response time of the `/compute` endpoint.
+
+### Results
 
 | Environment |    Average |    Minimum |    Maximum |
 | ----------- | ---------: | ---------: | ---------: |
 | Native VM   | 0.039293 s | 0.035845 s | 0.053111 s |
 | Docker      | 0.052390 s | 0.049004 s | 0.061435 s |
 
-### Analysis
+### Interpretation
 
-The measured average compute execution time was:
+The measured average response time was:
 
-* Native VM: **0.039293 seconds**
-* Docker: **0.052390 seconds**
+* **Native VM:** 0.039293 seconds
+* **Docker:** 0.052390 seconds
 
-The minimum and maximum execution times were also recorded for both environments.
-
-These measurements show the observed performance of the specific workload under the experimental conditions.
+The experiment therefore shows a measurable difference in compute response time for this particular workload.
 
 ---
 
-# 7. Memory Performance Results
+# 9. Memory Performance
+
+The memory benchmark measured the response time of the `/memory` endpoint.
+
+### Results
 
 | Environment |    Average |    Minimum |    Maximum |
 | ----------- | ---------: | ---------: | ---------: |
 | Native VM   | 0.031218 s | 0.028431 s | 0.041243 s |
 | Docker      | 0.034857 s | 0.031907 s | 0.043938 s |
 
-### Analysis
+### Interpretation
 
-The measured average memory-test execution time was:
+The measured average response time was:
 
-* Native VM: **0.031218 seconds**
-* Docker: **0.034857 seconds**
+* **Native VM:** 0.031218 seconds
+* **Docker:** 0.034857 seconds
 
-The minimum and maximum execution times were also recorded.
-
-The difference between the environments is relatively small for this particular workload.
+The difference between the two environments was relatively small for this particular memory workload.
 
 ---
 
-# 8. Concurrent Request Test
+# 10. Concurrent Request Performance
 
-The same concurrent request workload was executed in both environments.
+ApacheBench was used to test concurrent requests.
 
 ### Test Configuration
 
 ```text
-Requests: 100
+Total Requests: 100
 Concurrency: 10
 ```
 
@@ -206,171 +275,112 @@ Concurrency: 10
 | Native VM   |      100 |          10 |               0 |
 | Docker      |      100 |          10 |               0 |
 
-### Analysis
-
-Both environments successfully processed all **100 requests** with a concurrency level of **10**.
-
-No failed requests were recorded in either environment.
+Both environments successfully completed all tested requests without failures.
 
 ---
 
-# 9. Docker Resource Usage
+# 11. Docker Resource Usage
 
-Docker container resource usage was measured during the experiment.
+Docker resource usage was measured using:
 
-| Resource     |    Observed Value |
-| ------------ | ----------------: |
-| CPU Usage    |            ~0.24% |
-| Memory Usage |        ~111.9 MiB |
-| Memory Limit |         8.062 GiB |
-| Network I/O  | 286 KiB / 319 KiB |
-| Block I/O    |     0 B / 799 KiB |
-| Processes    |                11 |
-
-### Analysis
-
-The Docker container used approximately **0.24% CPU** and **111.9 MiB of memory** during the observed measurement.
-
-The container statistics also recorded its network I/O, block I/O and number of processes.
-
----
-
-# 10. System Memory During Experiment
-
-The system memory information observed during the experiment was:
-
-```text
-Total RAM:      8.1 GiB
-Used RAM:       1.7 GiB
-Free RAM:       4.2 GiB
-Available RAM:  6.3 GiB
-Swap:           4.0 GiB
+```bash
+docker stats --no-stream
 ```
 
-This information provides the memory context in which the benchmark was executed.
+### Observed Container Usage
+
+| Resource       | Docker Container |
+| -------------- | ---------------: |
+| CPU Usage      |            0.24% |
+| Memory Usage   |        111.9 MiB |
+| Memory Limit   |        8.062 GiB |
+| Memory Usage % |            1.36% |
+| Network I/O    |  286 kB / 319 kB |
+| Block I/O      |     0 B / 799 kB |
+| Processes      |               11 |
+
+These values represent the observed resource usage of the running FastAPI Docker container during the experiment.
 
 ---
 
-# 11. Docker Networking
+# 12. System Memory
 
-The application was exposed using different ports for the native VM and Docker environments.
+System memory was checked using:
+
+```bash
+free -h
+```
+
+### Observed Memory
+
+| Memory Parameter |   Value |
+| ---------------- | ------: |
+| Total RAM        | 8.1 GiB |
+| Used             | 1.7 GiB |
+| Free             | 4.2 GiB |
+| Available        | 6.3 GiB |
+| Swap             | 4.0 GiB |
+| Swap Used        |     0 B |
+
+The system had approximately **6.3 GiB of available memory** during the recorded measurement.
+
+---
+
+# 13. Docker Networking
+
+The FastAPI applications were exposed on separate ports.
 
 | Environment | Port |
 | ----------- | ---: |
 | Native VM   | 8000 |
 | Docker      | 8001 |
 
-### Endpoints
-
 ```text
-Native VM:
-http://localhost:8000
+Native VM
+FastAPI
+   │
+   └── localhost:8000
 
-Docker:
-http://localhost:8001
+
+Docker
+FastAPI
+   │
+   └── localhost:8001
 ```
 
-The separate ports allow the application running directly in the VM and the containerized application to be tested independently.
+This configuration allowed requests to be directed separately to the VM and Docker application instances.
 
 ---
 
-# 12. Methodology
+# 14. Overall Results
 
-The experiment follows these steps:
-
-### Step 1 — Configure the VM
-
-The application is executed inside the Ubuntu 24.04 Virtual Machine.
-
-### Step 2 — Run the Native VM Application
-
-The application is started directly inside the VM and exposed through:
-
-```text
-http://localhost:8000
-```
-
-### Step 3 — Run the Docker Application
-
-The same application is containerized using Docker and exposed through:
-
-```text
-http://localhost:8001
-```
-
-### Step 4 — Run Compute Test
-
-The compute workload is executed and the following values are recorded:
-
-* Average execution time
-* Minimum execution time
-* Maximum execution time
-
-### Step 5 — Run Memory Test
-
-The memory workload is executed and the following values are recorded:
-
-* Average execution time
-* Minimum execution time
-* Maximum execution time
-
-### Step 6 — Run Concurrent Request Test
-
-Both environments are tested using:
-
-```text
-100 requests
-Concurrency: 10
-```
-
-The number of failed requests is recorded.
-
-### Step 7 — Measure Docker Resources
-
-Docker statistics are collected to observe:
-
-* CPU usage
-* Memory usage
-* Network I/O
-* Block I/O
-* Process count
-
-### Step 8 — Record System Resources
-
-System memory information is collected using Linux system monitoring commands.
+| Test                |  Native VM |     Docker |
+| ------------------- | ---------: | ---------: |
+| Compute Average     | 0.039293 s | 0.052390 s |
+| Compute Minimum     | 0.035845 s | 0.049004 s |
+| Compute Maximum     | 0.053111 s | 0.061435 s |
+| Memory Average      | 0.031218 s | 0.034857 s |
+| Memory Minimum      | 0.028431 s | 0.031907 s |
+| Memory Maximum      | 0.041243 s | 0.043938 s |
+| Concurrent Requests |        100 |        100 |
+| Concurrency         |         10 |         10 |
+| Failed Requests     |          0 |          0 |
 
 ---
 
-# 13. Overall Results
+# 15. Performance Analysis
 
-| Metric          |  Native VM |     Docker |
-| --------------- | ---------: | ---------: |
-| Compute Average | 0.039293 s | 0.052390 s |
-| Compute Minimum | 0.035845 s | 0.049004 s |
-| Compute Maximum | 0.053111 s | 0.061435 s |
-| Memory Average  | 0.031218 s | 0.034857 s |
-| Memory Minimum  | 0.028431 s | 0.031907 s |
-| Memory Maximum  | 0.041243 s | 0.043938 s |
-| Requests        |        100 |        100 |
-| Concurrency     |         10 |         10 |
-| Failed Requests |          0 |          0 |
-| Port            |       8000 |       8001 |
+## Compute
 
----
+The Native VM recorded an average compute response time of **0.039293 seconds**, while Docker recorded **0.052390 seconds**.
 
-# 14. Performance Analysis
+This indicates that the measured compute workload completed faster in the Native VM configuration.
 
-## Compute Performance
+## Memory
 
-The native VM recorded an average compute execution time of **0.039293 seconds**, while Docker recorded **0.052390 seconds** for the measured workload.
+The Native VM recorded an average memory response time of **0.031218 seconds**, while Docker recorded **0.034857 seconds**.
 
-The benchmark therefore provides a direct measurement of the execution-time difference under the tested configuration.
-
-## Memory Performance
-
-The native VM recorded an average memory-test execution time of **0.031218 seconds**, while Docker recorded **0.034857 seconds**.
-
-The measured difference was smaller than the difference observed in the compute test.
+The measured difference was smaller than the compute test.
 
 ## Concurrent Requests
 
@@ -382,90 +392,67 @@ Both environments successfully handled:
 0 failed requests
 ```
 
-Therefore, both environments completed the tested concurrent workload successfully.
+Therefore, both environments successfully processed the tested concurrent workload.
 
-## Resource Usage
+## Docker Resource Usage
 
-The Docker container was observed using approximately:
+The Docker container used approximately:
 
 ```text
 CPU:    0.24%
 Memory: 111.9 MiB
 ```
 
-during the resource measurement.
+during the recorded resource measurement.
 
 ---
 
-# 15. Important Experimental Observation
+# 16. Result Summary
 
-The results in this project are measurements from the specific experimental environment and workload.
+The experiment produced the following observations:
 
-Performance can vary depending on:
+* The Native VM recorded lower average response time for the compute workload.
+* The Native VM also recorded slightly lower average response time for the memory workload.
+* Both environments successfully handled 100 requests with a concurrency level of 10.
+* No failed requests were recorded in the concurrent request test.
+* The Docker container consumed approximately 0.24% CPU and 111.9 MiB memory during the recorded resource snapshot.
+* The experiment demonstrates that performance differences depend on the specific workload and configuration.
 
-* CPU configuration
-* Number of VM CPU cores
-* Allocated VM memory
-* Host hardware
-* VMware configuration
-* Docker configuration
-* Storage system
-* Background processes
-* Workload characteristics
-* Operating system configuration
-
-Therefore, the measured results should be interpreted as experimental results rather than universal performance characteristics.
+These observations are based on the measurements collected during this experiment.
 
 ---
 
-# 16. VM vs Container Comparison
+# 17. Screenshots and Experimental Evidence
 
-| Feature              | Virtual Machine                  | Container                   |
-| -------------------- | -------------------------------- | --------------------------- |
-| Virtualization Level | Hardware / system virtualization | Operating-system level      |
-| Guest OS             | Required                         | Not required                |
-| Kernel               | Separate guest kernel            | Shared host kernel          |
-| Isolation            | Strong                           | Application-level isolation |
-| Startup              | Generally slower                 | Generally faster            |
-| Resource Overhead    | Generally higher                 | Generally lower             |
-| Portability          | High                             | High                        |
-| Resource Efficiency  | Generally lower                  | Generally higher            |
+The repository contains screenshots showing the commands, benchmark execution, Docker statistics, and recorded results.
 
----
+The screenshots are stored in:
 
-# 17. Advantages of Containers
+```text
+screenshots/
+```
 
-* Lightweight
-* Fast startup
-* Lower resource overhead
-* Efficient resource utilization
-* Easy application deployment
-* Good portability
-* Multiple containers can run on the same host
+Important evidence includes:
+
+* Docker CPU/resource information
+* Docker FIO benchmark output
+* Docker memory benchmark output
+* VM CPU benchmark output
+* VM disk benchmark output
+* FastAPI Docker resource information
+
+The raw benchmark outputs and supporting files are also maintained in the project directories.
 
 ---
 
-# 18. Advantages of Virtual Machines
-
-* Strong isolation
-* Complete guest operating system
-* Can run different operating systems
-* Useful for infrastructure virtualization
-* Provides a complete virtual hardware environment
-* Mature virtualization ecosystem
-
----
-
-# 19. Project Structure
+# 18. Project Structure
 
 ```text
 VM-vs-Container-Performance/
 │
-├── README.md
-│
 ├── api/
-│   ├── main.py
 │   ├── Dockerfile
+│   ├── main.py
 │   └── requirements.txt
 │
 ├── docker/
@@ -481,44 +468,39 @@ VM-vs-Container-Performance/
 ├── results/
 │   └── benchmark_results.txt
 │
-└── scripts/
-    ├── benchmark_api.sh
-    └── benchmark_summary.sh
+├── scripts/
+│   ├── benchmark_api.sh
+│   └── benchmark_summary.sh
+│
+├── screenshots/
+│   ├── docker-cpu-limits-command.png
+│   ├── docker-fio-sequential-read.png
+│   ├── docker-fio-sequential-write.png
+│   ├── fastapi-docker-resource-snapshot.png
+│   ├── sysbench-memory-runs-summary.png
+│   ├── vm-fio-sequential-read.png
+│   └── vm-sysbench-cpu-run.png
+│
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-# 20. Technologies Used
+# 19. Conclusion
 
-* Ubuntu 24.04
-* VMware Workstation
-* Docker
-* Linux
-* Python
-* FastAPI
-* Shell Scripting
-* REST API
-* System Benchmarking
-* Performance Analysis
+This experiment compared a FastAPI application running directly on an Ubuntu Virtual Machine with the same application running inside a Docker container.
+
+The experiment evaluated compute response time, memory response time, concurrent request handling, Docker resource usage, system memory, and networking configuration.
+
+The measured results show differences between the two environments for the tested workloads, while both environments successfully handled the concurrent request test without failures.
+
+The experiment provides practical measurements for understanding how VM-based and container-based application environments behave under the tested workloads.
 
 ---
 
-# 21. Conclusion
+## 20. Repository
 
-This project experimentally compares a native application running inside an Ubuntu Virtual Machine with the same application running inside a Docker container.
+The complete project, source code, scripts, benchmark outputs, documentation, and experimental screenshots are available in this repository:
 
-The experiment evaluates compute performance, memory performance, concurrent request handling, Docker resource usage, system memory and networking.
-
-The measured results show:
-
-* Native VM compute average: **0.039293 seconds**
-* Docker compute average: **0.052390 seconds**
-* Native VM memory average: **0.031218 seconds**
-* Docker memory average: **0.034857 seconds**
-* Both environments processed **100 requests**
-* Both used a concurrency level of **10**
-* Both recorded **0 failed requests**
-* Docker CPU usage observed: **~0.24%**
-* Docker memory usage observed: **~111.9 MiB**
-
-The experiment demonstrates how performance can be measured quantitatively when comparing virtualization approaches. The results are specific to the hardware, software configuration and workloads used in this experiment.
+[VM-vs-Container-Performance on GitHub](https://github.com/silicoder/VM-vs-Container-Performance?utm_source=chatgpt.com)
